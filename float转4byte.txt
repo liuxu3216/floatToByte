@@ -1,0 +1,55 @@
+package test;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+
+public class jjjj {
+//	inline float4 EncodeFloatRGBA( float v ) {
+//		  float4 enc = float4(1.0, 255.0, 65025.0, 16581375.0) * v;
+//		  enc = frac(enc);
+//		  enc -= enc.yzww * float4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);
+//		  return enc;
+//		}
+//		inline float DecodeFloatRGBA( float4 rgba ) {
+//		  return dot( rgba, float4(1.0, 1/255.0, 1/65025.0, 1/16581375.0) );
+//		}
+	
+		 /**
+	     * @param args
+	     * @throws IOException 
+	     */
+	    public static void main(String[] args) throws IOException {
+	        //float 类型值为123.456 以大端模式存储数据即高字节存于低地址，低字节存于高地址,小端模式反之
+//	        byte bytes[]={0x42,(byte) 0xf6,(byte)0xE9,0x79};
+	        byte bytes[]={0x42,(byte)0x23,0x00,0x00};
+//	        byte bytes[]={(byte)0x16,(byte)0x10,(byte)0x23};
+	        //创建一个 ByteArrayInputStream，使用bytes作为其缓冲区数组
+	        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+	        //再将bais 封装为DataInputStream类型
+	        DataInputStream dis=new DataInputStream(bais);
+	        float flt=dis.readFloat();
+	        dis.close();
+	        System.out.println("输出"+flt);    
+	      
+	      //4个字节转float
+//			byte[] a = new byte[4];
+//			a[0]=11;
+//			a[1]=22;
+//			a[2]=32;
+//			a[3]=44;
+//			float f = ByteBuffer.wrap(a).order(ByteOrder.LITTLE_ENDIAN).getFloat();
+//			System.out.println("输出"+f);
+//	        float flt = 40.75f;
+			System.out.println(Integer.toString(float2ByteArray(flt)[0]));
+			System.out.println(Integer.toString(float2ByteArray(flt)[1]));
+			System.out.println(Integer.toString(float2ByteArray(flt)[2]));			
+			System.out.println(Integer.toString(float2ByteArray(flt)[3]));
+	    }	
+	    public static byte [] float2ByteArray (float value)
+	    {
+	    return ByteBuffer.allocate(4).putFloat(value).array();
+	    }
+}

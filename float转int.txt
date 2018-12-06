@@ -1,0 +1,55 @@
+package test;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+public class floattoint {
+    
+    public static void main(String[] args) throws IOException{
+    	  int red = 221;
+          int yellow = 123;
+          int blue = 33;
+          int color = red * 256 * 256 + yellow * 256 + blue;
+          
+          int redValue = color / (256 * 256);
+          int yellowValue = (color / 256) % 256;
+          int blueValue = color % 256;
+          int sumColor = redValue+ yellowValue+blueValue;
+          System.out.println("红色"+redValue+"转byte"+intToByte(redValue));
+          System.out.println("黄色"+yellowValue+"转byte"+intToByte(yellowValue));
+          System.out.println("蓝色"+blueValue+"转byte"+intToByte(blueValue));
+          System.out.println("总和"+sumColor);
+          
+          byte bytes[]={(byte)intToByte(redValue),(byte)intToByte(yellowValue),(byte)intToByte(blueValue),0x00};
+//	        byte bytes[]={(byte)0x16,(byte)0x10,(byte)0x23};
+	        //创建一个 ByteArrayInputStream，使用bytes作为其缓冲区数组
+	        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+	        //再将bais 封装为DataInputStream类型
+	        DataInputStream dis=new DataInputStream(bais);
+	        float flt=dis.readFloat();
+	        dis.close();
+	        System.out.println("输出存成的float值："+flt);    
+	        
+	        System.out.println("红色"+Integer.toString(float2ByteArray(flt)[0]));
+			System.out.println("黄色"+Integer.toString(float2ByteArray(flt)[1]));
+			System.out.println("黄色"+Integer.toString(float2ByteArray(flt)[2]));			
+			System.out.println(Integer.toString(float2ByteArray(flt)[3]));
+	      
+	}
+	//byte 与 int 的相互转换
+	public static byte intToByte(int x) {
+		return (byte) x;
+	}
+	
+	public static int byteToInt(byte b) {
+		//Java 总是把 byte 当做有符处理；我们可以通过将其和 0xFF 进行二进制与得到它的无符值
+		return b & 0xFF;
+	}
+
+	 public static byte [] float2ByteArray (float value)
+	    {
+	    return ByteBuffer.allocate(4).putFloat(value).array();
+	    }
+}
